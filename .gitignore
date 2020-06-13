@@ -1,9 +1,0 @@
-node-api-express/src/database/*
-/node_modules
-node_modules/
-
-*.log
-yarn-error.log*
-yarn-error*
-yarn-error
-.gitignore
