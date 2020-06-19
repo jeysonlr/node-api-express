@@ -25,7 +25,7 @@ module.exports = (req, res, next) => {
             req.userId = decoded.id
             return next()
         })
-    } catch(err) {
-        res.status(500).send({error: err})
+    } catch (err) {
+        res.status(500).send({ error: err })
     }
 }
