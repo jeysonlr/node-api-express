@@ -1,0 +1,535 @@
+swagger: "2.0"
+info:
+  description: "Api para cadastramento de tarefas vinculadas a um usuário."
+  version: "1.0.0"
+  title: "Api para registrar trabalhos/projetos"
+  contact:
+    email: "jeysonlr@gmail.com"
+host: "localhost:3000"
+basePath: "/"
+tags:
+- name: "auth"
+  description: "Authenticação de usuário"
+
+- name: "projects"
+  description: "Operações com projetos"
+
+schemes:
+- "https"
+- "http"
+paths:
+  /auth/register:
+    post:
+      tags:
+      - "auth"
+      summary: "Cria novo usuário e realiza login"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Corpo para inserir usuario"
+        required: true
+        schema:
+          $ref: "#/definitions/Auth"
+      responses:
+        "200":
+          description: "Usuario cadastrado com sucesso"
+          schema:
+            $ref: "#/definitions/AuthResponse"
+        "400":
+          description: "Erro ao criar usuário"
+        "404":
+          description: "Usuário não encontrado"
+
+  /login/authenticate:
+    post:
+      tags:
+      - "auth"
+      summary: "Realiza login"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Corpo para realizar login"
+        required: true
+        schema:
+          $ref: "#/definitions/Login"
+      responses:
+        "200":
+          description: "Usuario cadastrado com sucesso"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+        "400":
+          description: "Erro ao realizar login"
+        "404":
+          description: "Usuário não encontrado"
+
+  /forgot/forgot_password:
+    post:
+      tags:
+      - "auth"
+      summary: "Realiza envio de email com um token para recuperar senha"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Corpo para enviar email para recuperar senha"
+        required: true
+        schema:
+          $ref: "#/definitions/ForgotPassword"
+      responses:
+        "200":
+          description: "Email enviado com sucesso para email@email.com"
+          schema:
+            $ref: "#/definitions/ForgotResponse"
+        "400":
+          description: "Erro ao enviar email"
+    
+  
+  /reset/reset_password:
+    post:
+      tags:
+      - "auth"
+      summary: "Realiza a alteração da senha"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Corpo para realizar alteração da senha"
+        required: true
+        schema:
+          $ref: "#/definitions/Reset_password"
+      responses:
+        "200":
+          description: "Senha atualizada com sucesso"
+          schema:
+            $ref: "#/definitions/ResetResponse"
+        "400":
+          description: "Erro ao atualizar senha"
+  
+  /projects/:
+    post:
+      tags:
+      - "projects"
+      summary: "Realiza o cadastro de um projeto"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Corpo para realizar cadastro de um projeto"
+        required: true
+        schema:
+          $ref: "#/definitions/Projects"
+      responses:
+        "200":
+          description: "projeto adicionado com sucesso"
+          schema:
+            $ref: "#/definitions/ProjectsResponse"
+        "400":
+          description: "Erro ao cadastrar projeto"
+
+  /projects:
+    get:
+      tags:
+      - "projects"
+      summary: "Realiza a busca de todos so projetos"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Corpo para realizar acadastro de um projeto"
+        required: true
+      responses:
+        "200":
+          description: "projeto adicionado com sucesso"
+          schema:
+            $ref: "#/definitions/ProjectsGetResponse"
+        "400":
+          description: "Erro ao atualizar senha"
+  
+  /projects/{projectId}:
+    get:
+      tags:
+      - "projects"
+      summary: "Realiza a busca de um projeto"
+      description: ""
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "projectId"
+        description: "Corpo para realizar acadastro de um projeto"
+        required: true
+      responses:
+        "200":
+          schema:
+            $ref: "#/definitions/ProjectsGetResponseById"
+        "400":
+          description: "Erro ao atualizar senha"
+
+    
+definitions:
+  Auth:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      name:
+        type: "string"
+        example: "nome"
+      email:
+        type: "string"
+        example: "email@email.com"
+      password:
+        type: "string"
+        example: "password"
+
+  AuthResponse:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      user:
+        properties:
+          _id:
+            type: "string"
+            format: "base64"
+            example: "exemplo"
+          name:
+            type: "string"
+            example: "exemplo"
+          email:
+            type: "string"
+            example: "exemplo"
+          createAt:
+            type: "string"
+            example: "exemplo"
+          __v:
+            type: "string"
+            example: "exemplo"
+      token:
+        type: "string"
+        example: "token"
+
+
+  Login:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      email:
+        type: "string"
+        example: "email@email.com"
+      password:
+        type: "string"
+        example: "password"
+
+  LoginResponse:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      user:
+        properties:
+          _id:
+            type: "string"
+            format: "base64"
+            example: "exemplo"
+          name:
+            type: "string"
+            example: "exemplo"
+          email:
+            type: "string"
+            example: "exemplo"
+          createAt:
+            type: "string"
+            example: "exemplo"
+          __v:
+            type: "string"
+            example: "exemplo"
+      token:
+        type: "string"
+        example: "token"
+
+  ForgotPassword:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      email:
+        type: "string"
+        example: "email@email.com"
+
+  ForgotResponse:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      data:
+        type: "string"
+        example: "Email enviado com sucesso para email@email.com"
+      
+  Reset_password:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      email:
+        type: "string"
+        example: "email@email.com"
+      token:
+        type: "string"
+        example: "token recebido no email"
+      password:
+        type: "string"
+        example: "password"
+
+  ResetResponse:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      data:
+        type: "string"
+        example: "Senha atualizada com sucesso"
+ 
+  Projects:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      title:
+        type: "string"
+        example: "titulo"
+      description:
+        type: "string"
+        example: "descrição"
+      tasks:
+        type: "array"
+        items:
+          $ref: "#/definitions/Tasks"
+        properties:
+          type: "object"
+
+  Tasks:
+    type: "object"
+    properties:
+      title:
+        type: "string"
+        example: "titulo"
+      assingnedTo:
+        type: "string"
+        example: "id_usuario"
+
+  ProjectsResponse:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      project:
+        type: "object"
+        properties:
+          _id:
+            type: "string"
+            example: "id_projeto"
+          title:
+            type: "string"
+            example: "titulo"
+          description:
+            type: "string"
+            example: "descrição"
+          user:
+            type: "string"
+            example: "id_usuario"
+          __v:
+            type: "integer"
+            example: "1"
+          tasks:
+            type: "array"
+            items:
+              $ref: "#/definitions/TasksResponse"
+            properties:
+              type: "object"
+     
+
+  TasksResponse:
+    type: "object"
+    properties:
+      completed:
+        type: "boolean"
+        example: "true"
+      _id:
+        type: "string"
+        example: "id_tarefa"
+      title:
+        type: "string"
+        example: "titulo da tarefa"
+      project:
+        type: "string"
+        example: "id_projeto"
+      createdAt:
+        type: "string"
+        example: "data"
+      __v:
+        type: "integer"
+        example: "1o"
+ 
+  ProjectsGetResponse:
+    type: "object"
+    required:
+    - "name"
+    - "photoUrls"
+    properties:
+      project:
+        type: "array"
+        items: 
+          $ref: "#/definitions/ProjectsGetResponseArray"
+
+  ProjectsGetResponseArray:
+    properties:
+      _id:
+        type: "string"
+        example: "id_projeto"
+      title:
+        type: "string"
+        example: "titulo"
+      description:
+        type: "string"
+        example: "descrição"
+      __v:
+        type: "integer"
+        example: "1"
+      createdAt:
+        type: "string"
+        example: "data"
+      user:
+        type: "object"
+        properties:
+          _id:
+            type: "string"
+            example: "id_projeto"
+          name:
+            type: "string"
+            example: "nome"
+          email:
+            type: "string"
+            example: "email@email.com"
+          __v:
+            type: "integer"
+            example: "1"
+          createdAt:
+            type: "string"
+            example: "data"
+      tasks:
+        type: "array"
+        items:
+          $ref: "#/definitions/TasksResponse"
+        properties:
+          type: "object"
+
+  ProjectsGetResponseById:
+    type: "object"
+    properties:
+      project:
+        type: "object"
+        properties:
+          _id:
+            type: "string"
+            example: "id_projeto"
+          title:
+            type: "string"
+            example: "titulo"
+          description:
+            type: "string"
+            example: "descrição"
+          __v:
+            type: "integer"
+            example: "1"
+          createdAt:
+            type: "string"
+            example: "data"
+          user:
+            type: "object"
+            properties:
+              _id:
+                type: "string"
+                example: "id_projeto"
+              name:
+                type: "string"
+                example: "nome"
+              email:
+                type: "string"
+                example: "email@email.com"
+              __v:
+                type: "integer"
+                example: "1"
+              createdAt:
+                type: "string"
+                example: "data"
+          tasks:
+            type: "array"
+            items:
+              $ref: "#/definitions/TasksResponseById"
+
+  TasksResponseById:
+    type: "object"
+    properties:
+      completed:
+        type: "boolean"
+        example: "true"
+      _id:
+        type: "string"
+        example: "id_tarefa"
+      title:
+        type: "string"
+        example: "titulo da tarefa"
+      project:
+        type: "string"
+        example: "id_projeto"
+      createdAt:
+        type: "string"
+        example: "data"
+      __v:
+        type: "integer"
+        example: "1o"
+      
+
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
